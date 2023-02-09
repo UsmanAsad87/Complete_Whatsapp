@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whatsapp_clone/common/utils/utils.dart';
 import 'package:whatsapp_clone/features/auth/controller/auth_controller.dart';
+import 'package:whatsapp_clone/utils/loader.dart';
 
 class UserInformationScreen extends ConsumerStatefulWidget {
   static const String routeName = '/user-information';
@@ -16,6 +17,7 @@ class UserInformationScreen extends ConsumerStatefulWidget {
 class _UserInformationScreenState extends ConsumerState<UserInformationScreen> {
   final TextEditingController nameController = TextEditingController();
   File? image;
+  bool isLoading=false;
 
   @override
   void dispose() {
@@ -28,10 +30,16 @@ class _UserInformationScreenState extends ConsumerState<UserInformationScreen> {
     setState(() {});
   }
   void storeUserData() async {
+    setState(() {
+      isLoading=true;
+    });
     String name= nameController.text.trim();
     if(name.isNotEmpty){
       ref.read(authControllerProvider).saveUserDataToFirebase(context, name, image);
     }
+    setState(() {
+      isLoading=false;
+    });
   }
 
   @override
@@ -86,7 +94,10 @@ class _UserInformationScreenState extends ConsumerState<UserInformationScreen> {
                     icon: const Icon(Icons.done),
                   ),
                 ],
-              )
+              ),
+              const SizedBox(height: 20),
+              if(isLoading)
+                spinKit(),
             ],
           ),
         ),
