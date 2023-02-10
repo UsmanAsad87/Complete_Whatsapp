@@ -15,7 +15,9 @@ import 'package:whatsapp_clone/features/chat/widgets/message_reply_preview.dart'
 
 class BottomChatField extends ConsumerStatefulWidget {
   final String receiverUserId;
+  final String recieverName;
   const BottomChatField({
+    required this.recieverName,
     required this.receiverUserId,
     Key? key,
   }) : super(key: key);
@@ -141,7 +143,7 @@ class _BottomChatFieldState extends ConsumerState<BottomChatField> {
     final isShowMessageReply=messageReply!=null;
     return Column(
       children: [
-        isShowMessageReply?const MessageReplayPreview():const SizedBox.shrink(),
+        isShowMessageReply? MessageReplayPreview(recieverName:widget.recieverName):const SizedBox.shrink(),
         Row(
           children: [
             Expanded(

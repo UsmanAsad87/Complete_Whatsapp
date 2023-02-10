@@ -61,6 +61,7 @@ class MobileChatScreen extends ConsumerWidget {
           ),
           BottomChatField(
             receiverUserId: uid,
+            recieverName: name,
           ),
         ],
       ),

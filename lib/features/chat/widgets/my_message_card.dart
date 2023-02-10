@@ -12,9 +12,10 @@ class MyMessageCard extends StatelessWidget {
   final String repliedText;
   final String username;
   final MessageEnum repliedMessageType;
+  final bool isSeen;
 
   const MyMessageCard(
-      {Key? key, required this.message, required this.date, required this.type, required this.onLeftSwipe, required this.repliedText, required this.username, required this.repliedMessageType})
+      {Key? key, required this.message, required this.date, required this.type, required this.onLeftSwipe, required this.repliedText, required this.username, required this.repliedMessageType, required this.isSeen})
       : super(key: key);
 
   @override
@@ -27,6 +28,7 @@ class MyMessageCard extends StatelessWidget {
         child: ConstrainedBox(
           constraints: BoxConstraints(
             maxWidth: MediaQuery.of(context).size.width - 45,
+            minWidth: 110,
           ),
           child: Card(
             elevation: 1,
@@ -90,10 +92,10 @@ class MyMessageCard extends StatelessWidget {
                       const SizedBox(
                         width: 5,
                       ),
-                      const Icon(
-                        Icons.done_all,
+                     Icon(
+                        isSeen?Icons.done_all:Icons.done,
                         size: 20,
-                        color: Colors.white60,
+                        color: isSeen?Colors.blue:Colors.white60,
                       ),
                     ],
                   ),
