@@ -134,7 +134,8 @@ class ChatRepository {
           : messageReply.isME
               ? senderUsername
               : recieverUsername,
-      repliedMessageType:  messageReply==null? MessageEnum.text:messageReply.messageEnum,
+      repliedMessageType:
+          messageReply == null ? MessageEnum.text : messageReply.messageEnum,
     );
     //user => sender Id => receiver id -> messages -> message id -> store message
     firestore
@@ -156,14 +157,13 @@ class ChatRepository {
         .set(message.toMap());
   }
 
-  void sendTextMessage(
-      {required BuildContext context,
-      required String text,
-      required String receiverUserId,
-      required UserModel senderUser,
-        required MessageReply? messageReply,
-
-       }) async {
+  void sendTextMessage({
+    required BuildContext context,
+    required String text,
+    required String receiverUserId,
+    required UserModel senderUser,
+    required MessageReply? messageReply,
+  }) async {
     try {
       var timeSent = DateTime.now();
       UserModel receiverUserData;
@@ -263,12 +263,13 @@ class ChatRepository {
     }
   }
 
-  void sendGIFMessage(
-      {required BuildContext context,
-      required String gifURL,
-      required String receiverUserId,
-      required UserModel senderUser,
-      required MessageReply? messageReply,}) async {
+  void sendGIFMessage({
+    required BuildContext context,
+    required String gifURL,
+    required String receiverUserId,
+    required UserModel senderUser,
+    required MessageReply? messageReply,
+  }) async {
     try {
       var timeSent = DateTime.now();
       UserModel receiverUserData;
@@ -287,18 +288,48 @@ class ChatRepository {
 
       var messageId = const Uuid().v1();
       _saveMessageToMessageSubcollection(
-        receiverUserId: receiverUserId,
-        text: gifURL,
-        timeSent: timeSent,
-        messageId: messageId,
-        username: senderUser.name,
-        receiverUserName: receiverUserData.name,
-        messageType: MessageEnum.gif,
+          receiverUserId: receiverUserId,
+          text: gifURL,
+          timeSent: timeSent,
+          messageId: messageId,
+          username: senderUser.name,
+          receiverUserName: receiverUserData.name,
+          messageType: MessageEnum.gif,
           messageReply: messageReply,
           recieverUsername: receiverUserData.name,
-          senderUsername: senderUser.name
-      );
+          senderUsername: senderUser.name);
     } catch (e) {
+      showSnackBar(context: context, content: e.toString());
+    }
+  }
+
+  void setChatMessageSeen(
+    BuildContext context,
+    String recieverUserId,
+    String messageId,
+  ) async {
+    try {
+
+      //user => sender Id => receiver id -> messages -> message id -> store message
+      firestore
+          .collection('users')
+          .doc(auth.currentUser!.uid)
+          .collection('chats')
+          .doc(recieverUserId)
+          .collection('messages')
+          .doc(messageId)
+          .update({'isSeen':true});
+      //user =>receiver id -> sender Id =>  messages -> message id -> store message
+      firestore
+          .collection('users')
+          .doc(recieverUserId)
+          .collection('chats')
+          .doc(auth.currentUser!.uid)
+          .collection('messages')
+          .doc(messageId)
+          .set({'isSeen':true});
+
+    } catch(e){
       showSnackBar(context: context, content: e.toString());
     }
   }

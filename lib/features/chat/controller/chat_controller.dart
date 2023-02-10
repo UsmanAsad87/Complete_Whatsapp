@@ -32,6 +32,7 @@ class ChatController {
             messageReply: messageReply,
           ),
         );
+    ref.read(messageReplyProvider.state).update((state) => null);
   }
 
   Stream<List<ChatContact>> chatContacts() {
@@ -60,6 +61,7 @@ class ChatController {
               messageEnum: messageEnum,
               messageReply: messageReply,
             ));
+    ref.read(messageReplyProvider.state).update((state) => null);
   }
 
   void sendGIFMessage(
@@ -77,5 +79,7 @@ class ChatController {
             receiverUserId: receiverUserId,
             senderUser: value!,
             messageReply: messageReply));
+    ref.read(messageReplyProvider.state).update((state) => null);
   }
 }
+

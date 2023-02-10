@@ -19,6 +19,7 @@ class MyMessageCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isReplying =repliedText.isNotEmpty;
     return SwipeTo(
       onLeftSwipe: onLeftSwipe,
       child: Align(
@@ -48,9 +49,30 @@ class MyMessageCard extends StatelessWidget {
                           top: 5,
                           bottom: 25,
                         ),
-                  child: DisplayTextImageGIF(
-                    message: message,
-                    type: type,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if(isReplying)...[
+                        Text(username,style: const TextStyle(fontWeight: FontWeight.bold),),
+                        const SizedBox(height: 5,),
+                        Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration:  BoxDecoration(
+                            color: backgroundColor.withOpacity(0.5),
+                            borderRadius: BorderRadius.all(const Radius.circular(5)),
+                          ),
+                          child:  DisplayTextImageGIF(
+                            message: repliedText,
+                            type: repliedMessageType,
+                          ),
+                        ),
+                        const SizedBox(height: 5,),
+                      ],
+                      DisplayTextImageGIF(
+                        message: message,
+                        type: type,
+                      ),
+                    ],
                   ),
                 ),
                 Positioned(

@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -73,6 +71,12 @@ class _ChatListState extends ConsumerState<ChatList> {
                 message: messageData.text,
                 date: timeSent,
                 type: messageData.type,
+                repliedText: messageData.repliedMessage,
+                repliedMessageType: messageData.repliedMessageType,
+                username: messageData.repliedTo,
+                onRightSwipe:(){
+                  return onMessageSwipe(messageData.text, false, messageData.type);
+                } ,
               );
             },
           );
