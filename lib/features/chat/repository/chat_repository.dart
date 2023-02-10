@@ -327,7 +327,7 @@ class ChatRepository {
           .doc(auth.currentUser!.uid)
           .collection('messages')
           .doc(messageId)
-          .set({'isSeen':true});
+          .update({'isSeen':true});
 
     } catch(e){
       showSnackBar(context: context, content: e.toString());

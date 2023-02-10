@@ -5,7 +5,8 @@ import 'package:whatsapp_clone/common/providers/message_reply_provider.dart';
 import 'package:whatsapp_clone/features/chat/widgets/display_text_image_git.dart';
 
 class MessageReplayPreview extends ConsumerWidget {
-  const MessageReplayPreview({Key? key}) : super(key: key);
+  const MessageReplayPreview({required this.recieverName, Key? key}) : super(key: key);
+  final String recieverName;
 
   void cancelReply(WidgetRef ref) {
     ref.read(messageReplyProvider.state).update((state) => null);
@@ -29,7 +30,7 @@ class MessageReplayPreview extends ConsumerWidget {
             children: [
               Expanded(
                 child: Text(
-                  messageReply!.isME ? 'Me' : 'Opposite',
+                  messageReply!.isME ? 'Me' : recieverName,
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
