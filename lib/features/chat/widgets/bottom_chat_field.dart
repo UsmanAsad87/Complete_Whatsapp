@@ -16,7 +16,8 @@ import 'package:whatsapp_clone/features/chat/widgets/message_reply_preview.dart'
 class BottomChatField extends ConsumerStatefulWidget {
   final String receiverUserId;
   final String recieverName;
-  const BottomChatField({
+  final bool isGroupChat;
+  const BottomChatField({ required this.isGroupChat,
     required this.recieverName,
     required this.receiverUserId,
     Key? key,

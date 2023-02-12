@@ -14,7 +14,8 @@ import 'package:whatsapp_clone/features/chat/widgets/sender_message_card.dart';
 
 class ChatList extends ConsumerStatefulWidget {
   final String receiverUserId;
-  const ChatList({required this.receiverUserId, Key? key}) : super(key: key);
+  final bool isGroupChat;
+  const ChatList({required this.isGroupChat, required this.receiverUserId, Key? key}) : super(key: key);
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _ChatListState();
