@@ -24,7 +24,11 @@ class ChatController {
   ChatController({required this.chatRepository, required this.ref});
 
   void sendTextMessage(
-      BuildContext context, String text, String receiverUserId) {
+    BuildContext context,
+    String text,
+    String receiverUserId,
+    bool isGroupChat,
+  ) {
     final messageReply = ref.read(messageReplyProvider);
     ref.read(userDataAuthProvider).whenData(
           (value) => chatRepository.sendTextMessage(
@@ -33,6 +37,7 @@ class ChatController {
             receiverUserId: receiverUserId,
             senderUser: value!,
             messageReply: messageReply,
+            isGroupChat: isGroupChat,
           ),
         );
     ref.read(messageReplyProvider.state).update((state) => null);
@@ -41,6 +46,7 @@ class ChatController {
   Stream<List<ChatContact>> chatContacts() {
     return chatRepository.getChatContact();
   }
+
   Stream<List<group_model.Group>> chatGroups() {
     return chatRepository.getChatGroups();
   }
@@ -49,11 +55,16 @@ class ChatController {
     return chatRepository.getChatStream(receiverUserId);
   }
 
+  Stream<List<Message>> groupChatStream(String groupId) {
+    return chatRepository.getGroupChatStream(groupId);
+  }
+
   void sendFileMessage(
     BuildContext context,
     File file,
     String receiverUserId,
     MessageEnum messageEnum,
+    bool isGroupChat,
   ) {
     final messageReply = ref.read(messageReplyProvider);
     ref
@@ -66,12 +77,17 @@ class ChatController {
               ref: ref,
               messageEnum: messageEnum,
               messageReply: messageReply,
+      isGroupChat: isGroupChat,
             ));
     ref.read(messageReplyProvider.state).update((state) => null);
   }
 
   void sendGIFMessage(
-      BuildContext context, String gifUrl, String receiverUserId) {
+    BuildContext context,
+    String gifUrl,
+    String receiverUserId,
+      bool isGroupChat,
+  ) {
     //https://giphy.com/gifs/abcnetwork-steve-harvey-judge-judgesteveharveyabc-SwpfkMlXB3FoTbrrF4
     //https://i.giphy.com/media/SwpfkMlXB3FoTbrrF4/200.gif
     int gifUrlPartIndex = gifUrl.lastIndexOf('-') + 1;
@@ -84,7 +100,8 @@ class ChatController {
             gifURL: newGifUrl,
             receiverUserId: receiverUserId,
             senderUser: value!,
-            messageReply: messageReply));
+            messageReply: messageReply,
+          isGroupChat: isGroupChat,));
     ref.read(messageReplyProvider.state).update((state) => null);
   }
 
