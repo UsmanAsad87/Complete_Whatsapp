@@ -42,9 +42,11 @@ class SelectContactRepository {
         }
         if(selectedPhoneNum== userData.phoneNumber) {
           isFound = true;
+          print(userData.toMap());
           Navigator.pushNamed((context), MobileChatScreen.routeName,arguments: {
             'name':userData.name,
             'uid':userData.uid,
+            'isGroupChat':false
           });
         }
       }
